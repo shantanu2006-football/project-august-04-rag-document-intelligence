@@ -1,0 +1,72 @@
+[
+  {
+    "id": "q1",
+    "question": "What three guarantees does the CAP theorem say a distributed system can provide at most two of?",
+    "relevant_doc_ids": ["distributed_systems"]
+  },
+  {
+    "id": "q2",
+    "question": "Why was the Raft consensus algorithm created if Paxos already existed?",
+    "relevant_doc_ids": ["distributed_systems"]
+  },
+  {
+    "id": "q3",
+    "question": "What is the difference between an exact nearest neighbor search and an approximate one?",
+    "relevant_doc_ids": ["vector_databases"]
+  },
+  {
+    "id": "q4",
+    "question": "How does the HNSW indexing algorithm find nearest neighbors?",
+    "relevant_doc_ids": ["vector_databases"]
+  },
+  {
+    "id": "q5",
+    "question": "What problem does a src layout prevent when packaging a Python project?",
+    "relevant_doc_ids": ["python_packaging"]
+  },
+  {
+    "id": "q6",
+    "question": "What are the three main tables in a pyproject.toml file?",
+    "relevant_doc_ids": ["python_packaging"]
+  },
+  {
+    "id": "q7",
+    "question": "How does self-attention let a Transformer avoid the long-range dependency problem RNNs had?",
+    "relevant_doc_ids": ["transformer_architecture"]
+  },
+  {
+    "id": "q8",
+    "question": "What is the difference between an encoder-only and a decoder-only Transformer model?",
+    "relevant_doc_ids": ["transformer_architecture"]
+  },
+  {
+    "id": "q9",
+    "question": "What kind of bug can integration tests catch that unit tests structurally cannot?",
+    "relevant_doc_ids": ["software_testing"]
+  },
+  {
+    "id": "q10",
+    "question": "What does property-based testing generate to find bugs, and what library implements it?",
+    "relevant_doc_ids": ["software_testing"]
+  },
+  {
+    "id": "q11",
+    "question": "Why does a RAG system retrieve passages before asking a language model to answer a question?",
+    "relevant_doc_ids": ["rag_systems"]
+  },
+  {
+    "id": "q12",
+    "question": "What metrics are used to measure retrieval quality in a RAG pipeline, independent of generation quality?",
+    "relevant_doc_ids": ["rag_systems"]
+  },
+  {
+    "id": "q13",
+    "question": "Both quorum-based consensus and approximate nearest neighbor search involve trading something off for speed or availability. What are these two systems and what do they each trade away?",
+    "relevant_doc_ids": ["distributed_systems", "vector_databases"]
+  },
+  {
+    "id": "q14",
+    "question": "How do embeddings relate a Transformer's attention mechanism to how a vector database ranks results?",
+    "relevant_doc_ids": ["transformer_architecture", "vector_databases"]
+  }
+]
