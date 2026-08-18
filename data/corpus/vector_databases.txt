@@ -1,0 +1,39 @@
+Vector Databases and Approximate Nearest Neighbor Search
+
+A vector database stores high-dimensional numerical embeddings and answers
+similarity queries: given a query vector, return the k stored vectors that are
+closest to it under some distance metric, typically cosine similarity or
+Euclidean (L2) distance. Embeddings are produced by a model that maps items
+such as text, images, or audio into a fixed-size dense vector so that
+semantically similar items end up close together in the vector space.
+
+Computing exact nearest neighbors by comparing a query against every stored
+vector is a brute-force search with linear time complexity in the number of
+vectors. This is fine for small collections but becomes too slow once a
+collection reaches millions of vectors. Approximate nearest neighbor (ANN)
+algorithms trade a small amount of recall for a large speedup by avoiding a
+full scan of the dataset.
+
+Two ANN approaches dominate production systems today. Graph-based methods such
+as HNSW (Hierarchical Navigable Small World) build a multi-layer graph where
+each vector is a node connected to its approximate neighbors; a query greedily
+walks the graph from a coarse layer down to a fine layer, giving very high
+recall at low latency but at the cost of higher memory usage. Quantization-based
+methods such as IVF-PQ (Inverted File with Product Quantization) first cluster
+the vector space into cells with k-means, then compress vectors within each
+cell into short codes; a query only searches the handful of cells nearest to it
+and reconstructs approximate distances from the compressed codes, trading some
+accuracy for a much smaller memory footprint.
+
+FAISS, developed by Meta AI Research, is a widely used open-source library that
+implements both families of index alongside simple flat (brute-force) indexes,
+and lets a developer choose the accuracy/speed/memory trade-off explicitly
+rather than hiding it behind a single default. A flat index with inner-product
+distance on L2-normalized vectors is mathematically equivalent to exact cosine
+similarity search, which makes it a reasonable default for small or medium
+corpora where exactness and simplicity matter more than raw query throughput.
+
+Regardless of the indexing algorithm, retrieval quality still depends heavily
+on the embedding model and on how the source documents were chunked before
+being embedded: a chunk that mixes two unrelated topics produces a vector that
+is not a good representative of either one.

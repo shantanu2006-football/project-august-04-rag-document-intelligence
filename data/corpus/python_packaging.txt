@@ -1,0 +1,36 @@
+Modern Python Packaging with pyproject.toml
+
+For most of Python's history, packages were described by a setup.py script
+that executed arbitrary code at install time, which made tooling around it
+fragile: a package manager could not inspect a project's metadata without
+running its build script first. PEP 517 and PEP 518 introduced a declarative,
+build-tool-agnostic standard centered on a single pyproject.toml file that any
+compliant tool can parse without executing anything.
+
+A pyproject.toml file has three important tables. The [build-system] table
+declares which build backend to use, such as setuptools, hatchling, or
+poetry-core, and which packages must be installed before the build can run.
+The [project] table declares standard metadata: name, version, description,
+the minimum supported Python version, runtime dependencies, and optional
+dependency groups (extras) such as a "dev" group containing test and lint
+tools. Tool-specific configuration, for example settings for pytest, ruff, or
+mypy, lives under [tool.<toolname>] tables so that many tools can share one
+configuration file without colliding.
+
+A "src layout", where the actual package lives under src/<package_name> rather
+than directly at the repository root, is now considered best practice for
+libraries. It prevents an easy mistake where tests accidentally import the
+package from the working directory instead of the installed version, because
+Python cannot import a package from src/ unless it has actually been installed
+(typically in editable mode with pip install -e .). This makes the test suite a
+much more faithful simulation of how the package behaves once it is actually
+installed by a user.
+
+Pinning exact dependency versions in the [project.dependencies] list, rather
+than leaving them unbounded, trades some flexibility for reproducibility: a
+fresh clone of the repository and a fresh install six months later will pull
+the exact same dependency graph an author tested against, at the cost of
+needing to bump the pins deliberately when a newer version is desired.
+Continuous integration should install the project the same way an end user
+would, typically pip install .[dev], rather than reconstructing an ad hoc
+environment by hand.

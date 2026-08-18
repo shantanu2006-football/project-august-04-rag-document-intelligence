@@ -1,0 +1,38 @@
+The Transformer Architecture and Self-Attention
+
+Before 2017, the dominant architectures for sequence modeling were recurrent
+neural networks (RNNs) and their gated variants, LSTMs and GRUs, which process
+a sequence one token at a time and carry information forward in a hidden
+state. This sequential processing made RNNs slow to train on long sequences
+because computation for position t could not start until position t-1 had
+finished, and made it hard for information from early tokens to influence
+predictions many steps later.
+
+The Transformer, introduced in the paper "Attention Is All You Need", replaced
+recurrence entirely with a mechanism called self-attention. In self-attention,
+every token in a sequence is compared against every other token in a single
+matrix multiplication: each token produces a query vector, a key vector, and a
+value vector, and the output for a token is a weighted sum of all value
+vectors, where the weights come from the dot product of that token's query
+with every other token's key, scaled and passed through a softmax. Because
+every position attends to every other position directly, the "distance"
+between any two tokens in the computation graph is a single step, which fixes
+the long-range dependency problem RNNs suffered from.
+
+Since self-attention has no inherent notion of token order, positional
+information is injected separately, either through fixed sinusoidal position
+encodings added to the input embeddings, or through learned position
+embeddings. Multi-head attention runs several attention computations in
+parallel with different learned projections, allowing the model to attend to
+different types of relationships (for example, syntactic versus coreference
+patterns) simultaneously, and then concatenates and projects the results back
+to the model's hidden dimension.
+
+A full Transformer block stacks a multi-head self-attention layer and a
+position-wise feed-forward network, each wrapped in a residual connection and
+layer normalization. Encoder-only models like BERT stack these blocks with
+bidirectional attention and are well suited to producing embeddings for
+classification or retrieval. Decoder-only models like GPT use masked
+(causal) attention, where a token can only attend to earlier tokens, which
+makes them naturally suited to autoregressive text generation one token at a
+time.

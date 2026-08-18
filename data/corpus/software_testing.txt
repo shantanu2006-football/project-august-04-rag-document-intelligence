@@ -1,0 +1,40 @@
+Levels of Automated Software Testing
+
+Automated tests exist to give a developer confidence that a change did not
+break existing behavior, without requiring a human to manually re-check the
+whole system after every change. Different levels of testing trade off speed,
+isolation, and realism, and a healthy test suite typically uses several
+levels together rather than relying on just one.
+
+Unit tests exercise a single function, method, or class in isolation, with any
+collaborators replaced by stubs, fakes, or mocks. Because they touch no
+network, filesystem, or database, unit tests run in milliseconds and can be
+executed on every keystroke; a large, fast unit test suite is what makes
+test-driven development practical. The trade-off is that unit tests validate a
+component's internal logic but cannot catch integration bugs, such as two
+correctly-implemented components disagreeing about the shape of the data they
+pass between each other.
+
+Integration tests exercise two or more real components together, such as an
+application talking to a real (or realistically emulated) database, message
+queue, or HTTP API. They catch the class of bug unit tests structurally
+cannot: mismatched contracts between components. They are slower and less
+isolated than unit tests, so a common strategy is to have far fewer
+integration tests than unit tests, focused on the highest-risk boundaries in
+the system, an idea often visualized as the "testing pyramid."
+
+End-to-end tests drive the entire system the way a real user or client would,
+often through a browser automation tool or a full API client. They give the
+strongest confidence that a feature actually works, but are the slowest, most
+brittle, and most expensive to maintain, since they can fail for reasons
+unrelated to the code under test, such as a flaky network call or a timing
+race in the UI.
+
+Property-based testing is a complementary technique, not a level of the
+pyramid: instead of hand-writing individual input/output examples, a developer
+states a general property that should hold for all inputs (for example,
+"sorting a list twice gives the same result as sorting it once") and a library
+such as Hypothesis generates many randomized inputs, including adversarial
+edge cases, to search for a counterexample. It is especially effective at
+catching edge cases a human author would not have thought to write down by
+hand, such as empty collections, unicode input, or extreme numeric values.

@@ -1,0 +1,40 @@
+Distributed Systems: Consistency and the CAP Theorem
+
+A distributed system is a collection of independent computers that appears to its
+users as a single coherent system. Because the machines communicate over an
+unreliable network, distributed systems must make explicit trade-offs that a
+single-machine program never has to consider.
+
+The CAP theorem, formalized by Eric Brewer and later proven by Gilbert and Lynch,
+states that a distributed data store can provide at most two of the following
+three guarantees simultaneously: Consistency, Availability, and Partition
+tolerance. Consistency means every read receives the most recent write or an
+error. Availability means every request receives a non-error response, without
+the guarantee that it contains the most recent write. Partition tolerance means
+the system continues to operate despite an arbitrary number of messages being
+dropped or delayed by the network between nodes.
+
+Because network partitions are a fact of life in any system that spans more than
+one machine, real systems must choose between consistency and availability when
+a partition occurs. Systems like ZooKeeper and etcd favor consistency (CP): they
+will refuse to serve a request rather than risk returning stale data. Systems
+like Cassandra and DynamoDB favor availability (AP) by default: they will serve
+a response from whatever replica is reachable, and reconcile conflicting writes
+later using techniques such as vector clocks or last-write-wins.
+
+Consensus algorithms are the mechanism most CP systems use to agree on a single
+value despite failures. Paxos, published by Leslie Lamport, was the first
+widely analyzed consensus protocol, but its correctness proofs are notoriously
+difficult to follow, which motivated the design of Raft. Raft achieves the same
+guarantees as Paxos but decomposes the problem into leader election, log
+replication, and safety, making it far easier to implement correctly. Both
+protocols require a majority (quorum) of nodes to agree before a value is
+considered committed, which is why clusters are typically sized with an odd
+number of nodes such as three or five.
+
+Beyond consensus, distributed systems rely on idempotent operations, retries
+with exponential backoff, and timeouts to remain correct in the presence of
+duplicate messages and slow nodes. Idempotency in particular is essential: if a
+client cannot tell whether a request succeeded before a timeout, it must be safe
+to retry that request without causing a double effect, such as charging a
+payment twice.
