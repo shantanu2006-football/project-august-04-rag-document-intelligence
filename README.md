@@ -98,7 +98,7 @@ explains it.
 
 ## Setup
 
-Requires Python 3.10+.
+Requires Python 3.11+ (numpy 2.4.6, the pinned version, has no wheels for 3.10).
 
 ```bash
 python3 -m venv .venv
